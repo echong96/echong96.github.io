@@ -3,65 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niceyyyyyyy</title>
+    <title>Falling I Love You</title>
     <style>
         body {
-            background-color: #f5f5dc; /* Light beige background */
-            font-family: 'Georgia', serif;
-            text-align: center;
-            padding: 50px;
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #004080 100%);
+            height: 100vh;
+            position: relative;
         }
-        #letter {
-            display: none;
-            background-color: #d2b48c; /* Light brown color */
-            color: #3b2a1e; /* Darker brown for text */
-            padding: 20px;
-            border: 2px solid #8b4513; /* Saddle brown border */
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
+        
+        .love-text {
+            position: absolute;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(100, 200, 255, 0.7);
+            white-space: nowrap;
+            user-select: none;
+            opacity: 0.9;
+            will-change: transform;
         }
-        #letter.show {
-            display: block;
-            transform: scale(1.05);
+        
+        @keyframes shine {
+            0% { text-shadow: 0 0 5px rgba(100, 200, 255, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(100, 200, 255, 1); }
+            100% { text-shadow: 0 0 5px rgba(100, 200, 255, 0.5); }
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #8b4513; /* Saddle brown */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #a0522d; /* Sienna */
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent, rgba(0, 100, 255, 0.1));
+            pointer-events: none;
+            animation: shine 5s infinite alternate;
         }
     </style>
 </head>
 <body>
-
-    <button id="showLetterButton">Click me</button>
-
-    <div id="letter">
-        <p>Hi nicey AHAHAHAH so this is the surprise, inubrak atoy via Html, and html a coding platform po used to build games, website, social, etc. Di rabiik inubra, kunak ku kayak ubraen maysa oras ngem haan met, manga 12 ko nalpas di rabii atoyen, hoping nga magustuwam Atoy. 
-‎
-‎Thank you so much for always being there for me, nicey. Your presence in my life makes me feel incredibly special, cherished, and truly valued in ways I can’t fully put into words. You have this amazing way of making even the darkest days feel lighter, and I’m endlessly grateful for the comfort and strength you bring into my world.
-‎
-‎I want you to know how much I appreciate everything about you—the kindness you show, the patience you have, and the unwavering support you give me without hesitation. You inspire me every single day to grow, to heal, and to become the best version of myself—not just for me, but for us.
-‎
-‎While I may not usually make promises, I want to make one to you from the depths of my heart. I promise to remain strong and steadfast, to stand by you no matter what challenges come our way. I will continue to love you genuinely and wholeheartedly, through every up and down, through every joy and every hardship. You are my person, and I am so blessed to have you..</p>
-    </div>
-
     <script>
-        document.getElementById('showLetterButton').onclick = function() {
-            document.getElementById('letter').classList.toggle('show');
-        };
+        const colors = ['#ffffff', '#a8e6ff', '#ffcce6', '#d4a5ff'];
+        
+        function createLoveText() {
+            const loveText = document.createElement('div');
+            loveText.className = 'love-text';
+            loveText.textContent = 'I love you';
+            
+            // Random properties
+            const x = Math.random() * window.innerWidth;
+            const speed = 0.5 + Math.random() * 2; // Speed between 0.5 and 2.5
+            const size = 16 + Math.random() * 24; // Size between 16 and 40
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            loveText.style.left = `${x}px`;
+            loveText.style.fontSize = `${size}px`;
+            loveText.style.color = color;
+            loveText.style.animationDuration = `${3 + Math.random() * 4}s`; // Random shine speed
+            
+            document.body.appendChild(loveText);
+            
+            let y = -50;
+            
+            function animate() {
+                y += speed;
+                loveText.style.transform = `translateY(${y}px)`;
+                
+                if (y < window.innerHeight) {
+                    requestAnimationFrame(animate);
+                } else {
+                    document.body.removeChild(loveText);
+                }
+            }
+            
+            animate();
+        }
+        
+        // Create initial love texts
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createLoveText, i * 500);
+        }
+        
+        // Keep creating new love texts
+        setInterval(createLoveText, 800);
+        
+        // Make texts appear on click
+        document.addEventListener('click', (e) => {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createLoveText, i * 200);
+            }
+        });
     </script>
-
 </body>
 </html>
+
