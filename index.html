@@ -1,103 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Falling I Love You</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #004080 100%);
-            height: 100vh;
-            position: relative;
-        }
-        
-        .love-text {
-            position: absolute;
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(100, 200, 255, 0.7);
-            white-space: nowrap;
-            user-select: none;
-            opacity: 0.9;
-            will-change: transform;
-        }
-        
-        @keyframes shine {
-            0% { text-shadow: 0 0 5px rgba(100, 200, 255, 0.5); }
-            50% { text-shadow: 0 0 15px rgba(100, 200, 255, 1); }
-            100% { text-shadow: 0 0 5px rgba(100, 200, 255, 0.5); }
-        }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, transparent, rgba(0, 100, 255, 0.1));
-            pointer-events: none;
-            animation: shine 5s infinite alternate;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health Professionals Picture Quiz</title>
+  <style>
+    :root{
+      --blue:#0a6ad8;/* primary */
+      --navy:#0a3769;/* headings */
+      --mint:#17a36b;/* correct */
+      --red:#d01c1c; /* wrong */
+      --bg:#f4f8ff;  /* page */
+      --card:#ffffff;/* card */
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#0d1b2a}
+    header{display:flex;gap:.75rem;align-items:center;justify-content:center;padding:18px 14px;background:#eaf2ff;border-bottom:1px solid #dde7ff;position:sticky;top:0;z-index:10}
+    header .logo{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--blue)}
+    header .logo svg{width:26px;height:26px;fill:#fff}
+    header h1{margin:0;color:var(--navy);font-weight:800;letter-spacing:.2px;font-size:clamp(1.1rem,2.2vw,1.5rem)}
+    .wrap{max-width:900px;margin:28px auto;padding:0 16px}
+    .card{background:var(--card);border-radius:20px;box-shadow:0 10px 30px rgba(13,27,42,.08);padding:20px}
+    .topline{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .badge{background:#eef5ff;color:var(--navy);padding:6px 10px;border-radius:999px;font-weight:600;font-size:.9rem}
+    .progress{flex:1;height:10px;background:#e9f0ff;border-radius:999px;margin:0 10px;position:relative;overflow:hidden}
+    .bar{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--blue),#5aa2ff);border-radius:inherit;transition:width .35s ease}
+    .score{font-weight:800;color:var(--navy)}.quiz{display:grid;grid-template-columns:1fr;gap:18px}
+.picture{display:grid;place-items:center;border:2px dashed #cfe0ff;background:#f9fbff;border-radius:18px;min-height:220px;padding:18px}
+.emoji{font-size:96px;line-height:1}
+.qtext{font-size:1.25rem;font-weight:800;color:var(--navy);text-align:center}
+
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.btn{border:0;border-radius:16px;padding:14px 16px;font-weight:800;font-size:1.05rem;background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 8px 18px rgba(10,106,216,.22);transition:transform .06s ease,opacity .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn[disabled]{opacity:.65;cursor:not-allowed;box-shadow:none}
+.btn.secondary{background:#b5cfff;color:#0d1b2a;font-weight:700;box-shadow:none}
+.btn.correct{background:var(--mint) !important}
+.btn.wrong{background:var(--red) !important}
+
+.controls{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.toast{min-height:40px;display:grid;place-items:center;text-align:center;font-weight:800}
+.toast.ok{color:var(--mint)}
+.toast.no{color:var(--red)}
+
+.footer{margin-top:14px;text-align:center;color:#4c6280;font-size:.95rem}
+
+@media (max-width:560px){
+  .emoji{font-size:76px}
+  .options{grid-template-columns:1fr}
+}
+
+  </style>
 </head>
 <body>
-    <script>
-        const colors = ['#ffffff', '#a8e6ff', '#ffcce6', '#d4a5ff'];
-        
-        function createLoveText() {
-            const loveText = document.createElement('div');
-            loveText.className = 'love-text';
-            loveText.textContent = 'I love you';
-            
-            // Random properties
-            const x = Math.random() * window.innerWidth;
-            const speed = 0.5 + Math.random() * 2; // Speed between 0.5 and 2.5
-            const size = 16 + Math.random() * 24; // Size between 16 and 40
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            loveText.style.left = `${x}px`;
-            loveText.style.fontSize = `${size}px`;
-            loveText.style.color = color;
-            loveText.style.animationDuration = `${3 + Math.random() * 4}s`; // Random shine speed
-            
-            document.body.appendChild(loveText);
-            
-            let y = -50;
-            
-            function animate() {
-                y += speed;
-                loveText.style.transform = `translateY(${y}px)`;
-                
-                if (y < window.innerHeight) {
-                    requestAnimationFrame(animate);
-                } else {
-                    document.body.removeChild(loveText);
-                }
-            }
-            
-            animate();
-        }
-        
-        // Create initial love texts
-        for (let i = 0; i < 20; i++) {
-            setTimeout(createLoveText, i * 500);
-        }
-        
-        // Keep creating new love texts
-        setInterval(createLoveText, 800);
-        
-        // Make texts appear on click
-        document.addEventListener('click', (e) => {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(createLoveText, i * 200);
-            }
-        });
-    </script>
-</body>
-</html>
+  <header>
+    <div class="logo" aria-hidden="true">
+      <!-- stethoscope icon -->
+      <svg viewBox="0 0 24 24" role="img" aria-label="stethoscope"><path d="M6 2a1 1 0 0 0-1 1v5a4 4 0 1 0 8 0V3a1 1 0 1 0-2 0v5a2 2 0 1 1-4 0V3a1 1 0 0 0-1-1zM4 12a6 6 0 0 0 12 0v-1a1 1 0 1 0-2 0v1a4 4 0 1 1-8 0v-1a1 1 0 1 0-2 0v1zm13 1a3 3 0 1 0 1.89 5.34A4.99 4.99 0 0 0 23 13v-1a1 1 0 1 0-2 0v1a3 3 0 0 1-6 0v-1a1 1 0 1 0-2 0v1a5 5 0 0 0 4 4.9V20a1 1 0 1 0 2 0v-1.1A5 5 0 0 0 23 13v-1a3 3 0 1 0-6 0v1z"/></svg>
+    </div>
+    <h1>Health Professionals — Picture Quiz</h1>
+  </header>  <main class="wrap">
+    <section class="card" role="region" aria-label="Quiz card">
+      <div class="topline" aria-hidden="true">
+        <span class="badge" id="topic">Nurse/Doctor Theme</span>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+        <div class="score" id="score">Score: 0</div>
+      </div><div class="quiz" id="quiz">
+    <div class="picture" aria-live="polite" aria-atomic="true">
+      <div class="emoji" id="emoji">🩺</div>
+    </div>
+    <div class="qtext" id="qtext">Which physician matches this picture?</div>
+    <div class="options" id="options" role="group" aria-label="Answer choices"></div>
+    <div class="toast" id="toast" aria-live="assertive"></div>
+    <div class="controls">
+      <button class="btn secondary" id="start">Start</button>
+      <button class="btn secondary" id="next" style="display:none">Next</button>
+      <button class="btn secondary" id="restart" style="display:none">Restart</button>
+    </div>
+  </div>
 
+  <div class="footer">Tip: You can replace the emoji with real images later (same question set still works!).</div>
+</section>
+
+  </main>  <script>
+    // Question bank: emoji stands in for the "picture"
+    // Correct answer + 3 distractors (4 options total)
+    const BANK = [
+      {emoji:'👶', correct:'Pediatrician', opts:['Cardiologist','Dermatologist','Neurologist']},
+      {emoji:'🧠', correct:'Psychiatrist', opts:['Pulmonologist','Surgeon','Ophthalmologist']},
+      {emoji:'🤰', correct:'Obstetrician', opts:['Allergist','Urologist','Gynecologist']},
+      {emoji:'👁️', correct:'Ophthalmologist', opts:['Dermatologist','Anesthesiologist','Gastroenterologist']},
+      {emoji:'💉', correct:'Anesthesiologist', opts:['Pulmonologist','Geriatrician','Gynecologist']},
+      {emoji:'🧴', correct:'Dermatologist', opts:['Cardiologist','Pediatrician','Surgeon']},
+      {emoji:'❤️', correct:'Cardiologist', opts:['Geriatrician','Pulmonologist','Neurologist']},
+      {emoji:'🤧', correct:'Allergist', opts:['Gynecologist','Ophthalmologist','Surgeon']},
+      {emoji:'🫁', correct:'Pulmonologist', opts:['Gastroenterologist','Neurologist','Pediatrician']},
+      {emoji:'🧠‍🩹', correct:'Neurologist', opts:['Allergist','Cardiologist','Geriatrician']},
+      {emoji:'🍽️', correct:'Gastroenterologist', opts:['Pulmonologist','Obstetrician','Urologist']},
+      {emoji:'👴', correct:'Geriatrician', opts:['Dermatologist','Cardiologist','Surgeon']},
+      {emoji:'🔪', correct:'Surgeon', opts:['Neurologist','Pediatrician','Obstetrician']},
+      {emoji:'🚽', correct:'Urologist', opts:['Gastroenterologist','Pulmonologist','Allergist']},
+      {emoji:'♀️', correct:'Gynecologist', opts:['Dermatologist','Cardiologist','Neurologist']},
+    ];
+
+    // State
+    let order = [];          // randomized question indices
+    let index = 0;           // current question in order[]
+    let score = 0;
+
+    const elEmoji = document.getElementById('emoji');
+    const elOptions = document.getElementById('options');
+    const elToast = document.getElementById('toast');
+    const elBar = document.getElementById('bar');
+    const elScore = document.getElementById('score');
+    const btnStart = document.getElementById('start');
+    const btnNext = document.getElementById('next');
+    const btnRestart = document.getElementById('restart');
+
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+      return arr;
+    }
+
+    function buildChoices(correct, distractors){
+      const choices = [correct, ...distractors];
+      return shuffle(choices);
+    }
+
+    function render(){
+      const q = BANK[order[index]];
+      elEmoji.textContent = q.emoji;
+      elToast.textContent = '';
+
+      // Build and render options with randomized placement
+      const choices = buildChoices(q.correct, q.opts);
+      elOptions.innerHTML = '';
+      choices.forEach(choice => {
+        const b = document.createElement('button');
+        b.className = 'btn';
+        b.type = 'button';
+        b.textContent = choice;
+        b.setAttribute('aria-label', 'Answer: '+choice);
+        b.addEventListener('click', () => onAnswer(b, choice === q.correct));
+        elOptions.appendChild(b);
+      });
+
+      // Update progress bar and controls
+      const pct = ((index)/BANK.length)*100;
+      elBar.style.width = pct + '%';
+      btnNext.style.display = 'none';
+      btnRestart.style.display = 'inline-block';
+    }
+
+    function lockButtons(){
+      [...elOptions.querySelectorAll('button')].forEach(b=>b.disabled=true);
+    }
+
+    function onAnswer(btn, isCorrect){
+      lockButtons();
+      if(isCorrect){
+        btn.classList.add('correct');
+        score++;
+        elToast.textContent = '✅ Correct!';
+        elToast.className = 'toast ok';
+      }else{
+        btn.classList.add('wrong');
+        elToast.textContent = '❌ Try again on the next one!';
+        elToast.className = 'toast no';
+      }
+      elScore.textContent = `Score: ${score}`;
+      btnNext.style.display = 'inline-block';
+      btnNext.focus();
+    }
+
+    function next(){
+      if(index < BANK.length-1){
+        index++;
+        render();
+      }else{
+        finish();
+      }
+    }
+
+    function finish(){
+      elBar.style.width = '100%';
+      const total = BANK.length;
+      const pct = Math.round((score/total)*100);
+      document.getElementById('qtext').textContent = 'Results';
+      elEmoji.textContent = '🎉';
+      elOptions.innerHTML = '';
+      const summary = document.createElement('div');
+      summary.className = 'toast ok';
+      summary.innerHTML = `<div style="font-size:1.25rem">You scored <strong>${score}</strong> out of <strong>${total}</strong> (<strong>${pct}%</strong>)</div>`;
+      elOptions.parentNode.insertBefore(summary, elToast);
+      elToast.textContent = 'Tap Restart to play again.';
+      btnNext.style.display = 'none';
+    }
+
+    function start(){
+      order = shuffle([...Array(BANK.length).keys()]);
+      index = 0;
+      score = 0;
+      elScore.textContent = 'Score: 0';
+      document.getElementById('qtext').textContent = 'Which physician matches this picture?';
+      btnStart.style.display = 'none';
+      render();
+    }
+
+    btnStart.addEventListener('click', start);
+    btnNext.addEventListener('click', next);
+    btnRestart.addEventListener('click', start);
+  </script></body>
